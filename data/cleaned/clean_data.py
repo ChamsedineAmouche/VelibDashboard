@@ -1,12 +1,8 @@
 import pandas as pd
 from data.raw.get_data import get_data
 
-def clean_data():
+def clean_data(raw):
     """Nettoie et prépare les données Vélib pour le dashboard."""
-
-    # Récupération des données brutes depuis l'API
-    raw = get_data()
-
     df = pd.DataFrame(raw)
 
     if df.empty:
@@ -38,6 +34,9 @@ def clean_data():
     for col in colonnes_int:
         df[col] = pd.to_numeric(df[col], errors="coerce")
 
+    # Supprimer les stations sans géolocalisation
+    df = df.dropna(subset=["lat", "lon"])
+
     # Conversion latitudes/longitudes
     df["lat"] = pd.to_numeric(df["lat"], errors="coerce")
     df["lon"] = pd.to_numeric(df["lon"], errors="coerce")
@@ -66,12 +65,3 @@ def clean_data():
 
     print("Données Vélib nettoyées :", df.shape)
     return df
-
-
-def main():
-    df = clean_data()
-    print(df.head())
-
-
-if __name__ == "__main__":
-    main()

@@ -63,13 +63,3 @@ def get_data():
 
     print(f"{len(all_stations)} stations téléchargées au total")
     return all_stations
-
-
-def main():
-    stations = get_data()
-    print("Aperçu :")
-    for s in stations[:3]:
-        print(s, "\n")
-
-if __name__ == "__main__":
-    main()
