@@ -1,5 +1,4 @@
 import pandas as pd
-from data.raw.get_data import get_data
 
 def clean_data(raw):
     """Nettoie et prépare les données Vélib pour le dashboard."""

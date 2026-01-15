@@ -57,11 +57,11 @@ def main():
 
     # --- SIDEBAR (FILTRES) ---
     st.sidebar.title("Filtres")
-    st.sidebar.write("Dashboard de **Mamadou**")
+    st.sidebar.write("Dashboard de **Mamadou et Chamsedine**")
     
     # Filtre Communes
     liste_communes = sorted(df['commune'].unique())
-    choix_communes = st.sidebar.multiselect("Filtrer par Communes :", liste_communes, default=["Paris"])
+    choix_communes = st.sidebar.multiselect("Filtrer par Communes :", liste_communes)
     
     if choix_communes:
         df_filtered = df[df['commune'].isin(choix_communes)]
@@ -157,7 +157,7 @@ def main():
             color=alt.value('#3182bd'),
             tooltip=['commune', alt.Tooltip('velos_disponibles', format='.1f')]
         ).interactive()
-        st.altair_chart(bar_chart, use_container_width=True)
+        st.altair_chart(bar_chart, width="stretch")
 
     with col_g2:
         st.subheader("⚡ Répartition Élec / Méca")
@@ -175,7 +175,7 @@ def main():
             color=alt.Color(field="Type", type="nominal", scale=alt.Scale(domain=['Électriques', 'Mécaniques'], range=['#1f77b4', '#aec7e8'])),
             tooltip=['Type', 'Valeur']
         )
-        st.altair_chart(pie_chart, use_container_width=True)
+        st.altair_chart(pie_chart, width="stretch")
 
     # --- SECTION C : ANALYSES DYNAMIQUES ---
     st.markdown("---")
@@ -209,7 +209,7 @@ def main():
         tooltip=['commune', col_y]
     ).interactive()
     
-    st.altair_chart(chart_type, use_container_width=True)
+    st.altair_chart(bar_chart, width="stretch")
 
     # 2. ANALYSE PAR CAPACITÉ (Slider)
     st.markdown("---")
@@ -236,7 +236,7 @@ def main():
         height=400
     ).interactive()
 
-    st.altair_chart(scatter_capa, use_container_width=True)
+    st.altair_chart(scatter_capa, width="stretch")
 
 if __name__ == "__main__":
     main()
