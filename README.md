@@ -119,7 +119,7 @@ Pour éviter de surcharger l’API et conserver un dashboard fluide, un mécanis
 
 ## Données
 
-- Source : Open Data Paris (https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/velib-disponibilite-en-temps-reel/records")
+- Source : Open Data Paris (https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/velib-disponibilite-en-temps-reel/records)
 - API publique
 - Environ 1500 stations
 - Données géolocalisées
