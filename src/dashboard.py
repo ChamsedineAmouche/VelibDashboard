@@ -49,7 +49,7 @@ def charger_donnees() -> pd.DataFrame:
 
 
 def sidebar_filters(df: pd.DataFrame) -> pd.DataFrame:
-    """ ""
+    """
     Construit les filtres dans la barre latérale (ex : communes) et renvoie
     un DataFrame filtré selon la sélection de l'utilisateur.
 
@@ -171,7 +171,6 @@ def render_global_stats(df_filtered: pd.DataFrame) -> None:
         df_filtered : pd.DataFrame
             Données filtrées utilisées pour les agrégations.
     """
-    st.markdown("---")
     col_g1, col_g2 = st.columns([2, 1])
 
     with col_g1:
@@ -232,7 +231,6 @@ def render_dynamic_analysis(df_filtered: pd.DataFrame, df_all: pd.DataFrame) -> 
         df_all : pd.DataFrame
             Données complètes (utile pour calculer le max de capacité du slider).
     """
-    st.markdown("---")
     st.header("📈 Analyses Dynamiques")
 
     st.subheader("1. Comparaison par Type de Vélo")
@@ -302,7 +300,6 @@ def render_histogram_velos(df_filtered: pd.DataFrame) -> None:
             Données complètes des stations.
     """
 
-    st.markdown("---")
     st.subheader("📐 Distribution du nombre de vélos disponibles par station")
 
     hist = (
@@ -338,10 +335,21 @@ def main() -> None:
     render_kpis(df_filtered)
     st.markdown("---")
 
-    render_map(df_filtered)
-    render_histogram_velos(df_filtered)
-    render_global_stats(df_filtered)
-    render_dynamic_analysis(df_filtered, df)
+    # Création des onglets
+    tab1, tab2, tab3 = st.tabs(
+        ["📍 Carte Interactive", "📊 Statistiques", "📈 Analyses dynamiques"]
+    )
+
+    with tab1:
+        render_map(df_filtered)
+
+    with tab2:
+        render_global_stats(df_filtered)
+        st.markdown("---")
+        render_histogram_velos(df_filtered)
+
+    with tab3:
+        render_dynamic_analysis(df_filtered, df)
 
 
 if __name__ == "__main__":
