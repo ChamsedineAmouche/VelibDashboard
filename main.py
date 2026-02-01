@@ -9,7 +9,12 @@ def main() -> None:
     """
     print("🚲 Lancement du dashboard Vélib (Streamlit)...")
 
-    subprocess.run([sys.executable, "-m", "streamlit", "run", "src/dashboard.py"])
+    try: 
+        subprocess.run([sys.executable, "-m", "streamlit", "run", "src/dashboard.py"],
+                    check=False,
+                    )
+    except KeyboardInterrupt:
+        print("\n Dashboard arrêté !")
 
 
 if __name__ == "__main__":

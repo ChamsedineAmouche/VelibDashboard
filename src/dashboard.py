@@ -62,7 +62,6 @@ def sidebar_filters(df: pd.DataFrame) -> pd.DataFrame:
             Sous-ensemble filtré des stations.
     """
     st.sidebar.title("Filtres")
-    st.sidebar.write("Dashboard de **Mamadou et Chamsedine**")
 
     liste_communes = sorted(df["commune"].dropna().unique())
     choix_communes = st.sidebar.multiselect("Filtrer par Communes :", liste_communes)
