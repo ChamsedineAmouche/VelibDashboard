@@ -1,6 +1,6 @@
-import urllib.request
 import json
-from typing import List, Dict, Any
+import urllib.request
+from typing import Any
 
 # URL API
 VELIB_API_URL = (
@@ -8,8 +8,9 @@ VELIB_API_URL = (
     "velib-disponibilite-en-temps-reel/records"
 )
 
+
 # Comme l'API ne renvoit que 100 résultats maximum il faut gérer la pagination
-def fetch_page(offset: int = 0, limit: int = 100) -> List[Dict[str, Any]]:
+def fetch_page(offset: int = 0, limit: int = 100) -> list[dict[str, Any]]:
     """
     Récupère une page de résultats depuis l'API Vélib.
 
@@ -27,7 +28,7 @@ def fetch_page(offset: int = 0, limit: int = 100) -> List[Dict[str, Any]]:
             Liste de dictionnaires représentant les stations Vélib.
             Retourne une liste vide en cas d'erreur réseau.
     """
-    
+
     url = f"{VELIB_API_URL}?limit={limit}&offset={offset}"
 
     req = urllib.request.Request(
@@ -35,7 +36,7 @@ def fetch_page(offset: int = 0, limit: int = 100) -> List[Dict[str, Any]]:
         headers={
             "User-Agent": "Mozilla/5.0",
             "Accept": "application/json",
-        }
+        },
     )
 
     try:
@@ -48,7 +49,7 @@ def fetch_page(offset: int = 0, limit: int = 100) -> List[Dict[str, Any]]:
         print("Erreur réseau :", e)
         return []
 
-def get_data() -> List[Dict[str, Any]]:
+def get_data() -> list[dict[str, Any]]:
     """
     Récupère l'ensemble des stations Vélib disponibles via pagination automatique.
 
@@ -60,11 +61,11 @@ def get_data() -> List[Dict[str, Any]]:
             Liste complète des stations Vélib sous forme de dictionnaires,
             incluant les coordonnées géographiques (lat, lon) lorsque disponibles.
     """
-    
+
     all_stations = []
     offset = 0
     limit = 100  # Maxmimum autorisé par l'API
-    
+
     while True:
         results = fetch_page(offset=offset, limit=limit)
 
