@@ -1,11 +1,21 @@
 import pandas as pd
 
-def clean_data(raw):
-    """Nettoie et prépare les données Vélib pour le dashboard."""
+def clean_data(raw: list[dict]) -> pd.DataFrame:
+    """
+    Convertit les données brutes (liste de dictionnaires) en DataFrame et applique
+    les transformations nécessaires (renommage, types, filtrage, taux_dispo).
+    
+    Args:
+        raw : list[dict]
+            Données brutes provenant de l'API.
+
+    Returns:
+        pd.DataFrame
+            Données nettoyées et prêtes pour l'analyse.
+    """
     df = pd.DataFrame(raw)
 
     if df.empty:
-        print("Aucune donnée récupérée.")
         return df
     
     # Renommage des colonnes principales
@@ -33,12 +43,12 @@ def clean_data(raw):
     for col in colonnes_int:
         df[col] = pd.to_numeric(df[col], errors="coerce")
 
-    # Supprimer les stations sans géolocalisation
-    df = df.dropna(subset=["lat", "lon"])
-
     # Conversion latitudes/longitudes
     df["lat"] = pd.to_numeric(df["lat"], errors="coerce")
     df["lon"] = pd.to_numeric(df["lon"], errors="coerce")
+    
+    # Supprimer les stations sans géolocalisation
+    df = df.dropna(subset=["lat", "lon"])
 
     # Filtrer sur les stations actives
     df = df[df["is_installed"] == "OUI"]
@@ -61,6 +71,5 @@ def clean_data(raw):
         "bornes_disponibles",
         "taux_dispo"
     ]]
-
-    print("Données Vélib nettoyées :", df.shape)
+    
     return df

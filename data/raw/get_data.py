@@ -1,5 +1,6 @@
 import urllib.request
 import json
+from typing import List, Dict, Any
 
 # URL API
 VELIB_API_URL = (
@@ -8,8 +9,24 @@ VELIB_API_URL = (
 )
 
 # Comme l'API ne renvoit que 100 résultats maximum il faut gérer la pagination
-def fetch_page(offset=0, limit=100):
-    """Récupère une seule page de l’API via urllib."""
+def fetch_page(offset: int = 0, limit: int = 100) -> List[Dict[str, Any]]:
+    """
+    Récupère une page de résultats depuis l'API Vélib.
+
+    L'API étant limitée à 100 enregistrements par requête, cette fonction
+    permet de récupérer une tranche de données via les paramètres offset/limit.
+
+    Args:
+        offset : int, optional
+            Position de départ dans le jeu de données (pagination), par défaut 0.
+        limit : int, optional
+            Nombre maximum d'enregistrements à récupérer (max = 100), par défaut 100.
+
+    Returns:
+        list[dict]
+            Liste de dictionnaires représentant les stations Vélib.
+            Retourne une liste vide en cas d'erreur réseau.
+    """
     
     url = f"{VELIB_API_URL}?limit={limit}&offset={offset}"
 
@@ -31,16 +48,24 @@ def fetch_page(offset=0, limit=100):
         print("Erreur réseau :", e)
         return []
 
-def get_data():
-    """Récupère toutes les stations Vélib via pagination automatique."""
+def get_data() -> List[Dict[str, Any]]:
+    """
+    Récupère l'ensemble des stations Vélib disponibles via pagination automatique.
+
+    Cette fonction appelle l'API autant de fois que nécessaire afin de contourner
+    la limite de 100 résultats par requête imposée par l'API Open Data.
+
+    Returns:
+        List[Dict[str, Any]]
+            Liste complète des stations Vélib sous forme de dictionnaires,
+            incluant les coordonnées géographiques (lat, lon) lorsque disponibles.
+    """
     
     all_stations = []
     offset = 0
     limit = 100  # Maxmimum autorisé par l'API
     
     while True:
-        print(f"Récupération page offset={offset}...")
-
         results = fetch_page(offset=offset, limit=limit)
 
         if not results:
@@ -61,5 +86,4 @@ def get_data():
         # Passer à la page suivante
         offset += limit
 
-    print(f"{len(all_stations)} stations téléchargées au total")
     return all_stations
