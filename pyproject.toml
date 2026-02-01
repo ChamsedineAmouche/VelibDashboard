@@ -1,0 +1,12 @@
+[tool.ruff]
+target-version = "py311"
+src = ["src", "data"] # Dossiers à analyser
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"] # On ignore lignes trop longues
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
